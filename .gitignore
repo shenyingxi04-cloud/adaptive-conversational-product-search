@@ -44,3 +44,8 @@ experiments/semantic/potion-base-8M/
 
 # Local diagnostic ranking reports.
 /*_ranks.jsonl
+
+# Local presentation build and QA artifacts; keep the final PPTX only.
+/demo_assets/ppt_build/
+/demo_assets/rendered/
+*.pptx.inspect.ndjson
