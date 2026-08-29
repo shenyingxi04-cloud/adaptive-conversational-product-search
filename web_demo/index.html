@@ -44,13 +44,13 @@
     .latency { text-align:right; color:var(--muted); font-size:11px; line-height:1.7; }
     .latency strong { color:var(--green); font-size:17px; }
     .grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
-    .card { position:relative; min-height:218px; border:1px solid var(--line); border-radius:16px; padding:18px; background:white; transition:.18s; animation:rise .3s ease both; }
+    .card { position:relative; min-height:270px; border:1px solid var(--line); border-radius:16px; padding:18px; background:white; transition:.18s; animation:rise .3s ease both; }
     .card:hover { transform:translateY(-2px); box-shadow:0 10px 28px #1b365d13; border-color:#bcd1f4; }
     .rank { position:absolute; right:14px; top:14px; width:28px; height:28px; border-radius:9px; display:grid; place-items:center; background:var(--sky); color:var(--blue); font-size:11px; font-weight:800; }
     .icon { width:42px; height:42px; border-radius:13px; display:grid; place-items:center; background:var(--panel); font-size:21px; margin-bottom:14px; }
-    .title { padding-right:30px; height:44px; overflow:hidden; font-weight:750; font-size:13px; line-height:1.35; }
-    .seller { color:var(--muted); font-size:10px; margin:7px 0 12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .feature { height:34px; overflow:hidden; color:#566379; font-size:10px; line-height:1.5; }
+    .title { padding-right:30px; min-height:58px; overflow:hidden; font-weight:750; font-size:13px; line-height:1.45; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:3; text-overflow:ellipsis; }
+    .seller { color:var(--muted); font-size:10px; margin:10px 0 12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .feature { min-height:32px; overflow:hidden; color:#566379; font-size:10px; line-height:1.5; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; text-overflow:ellipsis; }
     .meta { display:flex; justify-content:space-between; align-items:center; margin-top:14px; padding-top:12px; border-top:1px solid #edf0f4; font-size:11px; }
     .rating { color:#a36600; } .asin { color:#9aa5b4; font-family:ui-monospace,Consolas,monospace; }
     .welcome { grid-column:1/-1; margin-top:80px; text-align:center; color:var(--muted); }

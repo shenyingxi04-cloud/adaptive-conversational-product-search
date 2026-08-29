@@ -68,6 +68,11 @@ class DemoApp:
             for rank, rec in enumerate(result["recommendations"], start=1):
                 asin = rec["parent_asin"]
                 product = self.agent._products.get(asin, {})
+                raw_feature = product.get("features") or product.get("description") or []
+                if isinstance(raw_feature, list):
+                    feature = raw_feature[0] if raw_feature else ""
+                else:
+                    feature = str(raw_feature)
                 categories = product.get("categories") or []
                 if isinstance(categories, str):
                     categories = [categories]
@@ -82,7 +87,7 @@ class DemoApp:
                     "rating": product.get("average_rating"),
                     "rating_count": product.get("rating_number"),
                     "categories": categories[-3:],
-                    "feature": (product.get("features") or product.get("description") or [""])[0],
+                    "feature": feature,
                 })
         elapsed = time.perf_counter() - started
         return {
