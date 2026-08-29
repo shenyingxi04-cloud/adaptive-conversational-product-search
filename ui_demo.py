@@ -68,6 +68,11 @@ class DemoApp:
             for rank, rec in enumerate(result["recommendations"], start=1):
                 asin = rec["parent_asin"]
                 product = self.agent._products.get(asin, {})
+                categories = product.get("categories") or []
+                if isinstance(categories, str):
+                    categories = [categories]
+                elif not isinstance(categories, list):
+                    categories = list(categories)
                 cards.append({
                     "rank": rank,
                     "parent_asin": asin,
@@ -76,7 +81,7 @@ class DemoApp:
                     "price": product.get("price"),
                     "rating": product.get("average_rating"),
                     "rating_count": product.get("rating_number"),
-                    "categories": product.get("categories", [])[-3:],
+                    "categories": categories[-3:],
                     "feature": (product.get("features") or product.get("description") or [""])[0],
                 })
         elapsed = time.perf_counter() - started
@@ -166,4 +171,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
