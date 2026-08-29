@@ -32,7 +32,7 @@ def compact_constraints(state: dict) -> str:
 
 def run_demo(catalog: Path, top_k: int) -> None:
     print("=" * 72)
-    print("V5.12d - Offline Conversational Product Search")
+    print("V5.13 - Offline Conversational Product Search")
     print("=" * 72)
 
     started = time.perf_counter()
@@ -68,7 +68,7 @@ def run_demo(catalog: Path, top_k: int) -> None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Run the V5.12d three-turn demo.")
+    parser = argparse.ArgumentParser(description="Run the V5.13 three-turn demo.")
     parser.add_argument("--catalog", default="data/catalog.jsonl", type=Path)
     parser.add_argument("--top-k", default=5, type=int)
     args = parser.parse_args()

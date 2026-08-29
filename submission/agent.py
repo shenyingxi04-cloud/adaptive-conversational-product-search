@@ -725,6 +725,12 @@ class Agent:
     # volume is public catalog evidence and cannot outweigh intent matches.
     BROWSING_POPULARITY_WEIGHT = 0.5
 
+    # Small catalog-only trust prior for high-intent buying queries.
+    BUYING_POPULARITY_WEIGHT = 1.0
+
+    # Preserve a bounded amount of evidence from multi-route retrieval order.
+    BUYING_CANDIDATE_PRIOR_WEIGHT = 4.0
+
 
     # ========================================================
     # Initialization
@@ -2644,14 +2650,19 @@ class Agent:
                 self.STRICT_FEATURE_MATCH_BONUS
             )
 
-        if mode == "browsing":
-            # Saturates at 100k reviews, contributing at most 0.5 point.
-            # This acts as a tie-breaker among similarly relevant products.
+        popularity_weight = {
+            "browsing": self.BROWSING_POPULARITY_WEIGHT,
+            "buying": self.BUYING_POPULARITY_WEIGHT,
+        }.get(mode, 0.0)
+
+        if popularity_weight:
+            # Saturates at 100k reviews and remains a bounded tie-breaker
+            # among products that already match the expressed intent.
             review_count = int(
                 product.get("rating_number", 0) or 0
             )
             total_score += (
-                self.BROWSING_POPULARITY_WEIGHT
+                popularity_weight
                 * min(math.log1p(review_count) / math.log1p(100_000), 1.0)
             )
 
@@ -2676,7 +2687,7 @@ class Agent:
         seen = set()
 
 
-        for parent_asin in candidate_ids:
+        for candidate_rank, parent_asin in enumerate(candidate_ids, start=1):
 
             if parent_asin in seen:
                 continue
@@ -2693,6 +2704,12 @@ class Agent:
                     state,
                 )
             )
+
+            if state.get("mode") == "buying":
+                score += (
+                    self.BUYING_CANDIDATE_PRIOR_WEIGHT
+                    / math.sqrt(candidate_rank)
+                )
 
 
             scored.append(

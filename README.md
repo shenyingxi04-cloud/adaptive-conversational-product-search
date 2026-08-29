@@ -9,9 +9,9 @@ Evaluated with the organizer-provided deterministic harness on the 200-session p
 | Metric | Released starter | This project |
 |---|---:|---:|
 | Hit Rate@10 | 0.125000 | **0.770000** |
-| MRR | 0.068034 | **0.405845** |
-| MTTC (lower is better) | 9.810000 | **4.445000** |
-| Technical Score | — | **0.637853** |
+| MRR | 0.068034 | **0.414903** |
+| MTTC (lower is better) | 9.810000 | **4.440000** |
+| Technical Score | — | **0.640671** |
 
 The final agent improves Hit Rate@10 by **6.16×** without an external API, paid model, network connection, or GPU. See the [full result breakdown](docs/results_summary.md).
 
@@ -103,10 +103,10 @@ Expected aggregate output:
 
 ```text
 Hit Rate@10     0.770000
-MRR             0.405845
-MTTC            4.445000
-Efficiency      0.655500
-Technical Score 0.637853
+MRR             0.414903
+MTTC            4.440000
+Efficiency      0.656000
+Technical Score 0.640671
 ```
 
 The evaluator is deterministic. Do not edit the evaluator or public labels when reproducing the result.
@@ -150,7 +150,7 @@ The demo shows broad browsing, added rainy-day requirements, and an explicit int
 
 ## Development approach
 
-The system was developed through controlled ablation rather than accumulating unverified patches. Regressing experiments were discarded. Full-catalog semantic retrieval and an excessive popularity prior both lost score and were rejected. `starter/agent.py` is the frozen V5.12d champion.
+The system was developed through controlled ablation rather than accumulating unverified patches. Regressing experiments were discarded. Full-catalog semantic retrieval and an excessive popularity prior both lost score and were rejected. `starter/agent.py` is the frozen V5.13 champion.
 
 ## Limitations and future improvements
 
@@ -178,4 +178,4 @@ See the [release checklist](docs/release_checklist.md) for the remaining GitHub,
 
 ## Recording UI
 
-On Windows, double-click `start_demo_ui.bat`. The browser opens `http://127.0.0.1:8765` and uses the existing V5.12d agent locally. No external API or network connection is used by ranking. Use the three preset prompts for the recorded multi-turn demo.
+On Windows, double-click `start_demo_ui.bat`. The browser opens `http://127.0.0.1:8765` and uses the existing V5.13 agent locally. No external API or network connection is used by ranking. Use the three preset prompts for the recorded multi-turn demo.

@@ -60,7 +60,7 @@ Target duration: 2 minutes 45 seconds to 2 minutes 55 seconds. Speak naturally a
 
 **Voiceover:**
 
-> On the organizer’s two-hundred-session public evaluator, V5.12d achieved seventy-seven percent Hit Rate at ten, an MRR of zero point four zero five eight, and a recommended technical score of zero point six three seven nine. Repeated full runs produced identical results.
+> On the organizer’s two-hundred-session public evaluator, V5.13 achieved seventy-seven percent Hit Rate at ten, an MRR of zero point four one four nine, and a recommended technical score of zero point six four zero seven. Repeated full runs produced identical results.
 
 ## 2:25–2:43 — Reliability
 

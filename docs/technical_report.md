@@ -1,10 +1,10 @@
-# Technical Report — V5.12d
+# Technical Report — V5.13
 
 ## Executive summary
 
-V5.12d is a stateful, fully offline conversational product-search agent. It combines SQLite FTS5 multi-route retrieval, structured multi-turn constraints, deterministic field-aware reranking, a small local semantic reranker, and a bounded review-volume prior. It never sends catalog or conversation data to an external service.
+V5.13 is a stateful, fully offline conversational product-search agent. It combines SQLite FTS5 multi-route retrieval, structured multi-turn constraints, deterministic field-aware reranking, a small local semantic reranker, a bounded review-volume prior, and a retrieval-order tie-breaker for high-intent queries. It never sends catalog or conversation data to an external service.
 
-On the organizer-provided 200-session public development set and frozen 50,000-product catalog, it achieves Hit Rate@10 `0.770000`, MRR `0.405845`, MTTC `4.445000`, and recommended technical score `0.637853`.
+On the organizer-provided 200-session public development set and frozen 50,000-product catalog, it achieves Hit Rate@10 `0.770000`, MRR `0.414903`, MTTC `4.440000`, and recommended technical score `0.640671`.
 
 ## Runtime environment
 
@@ -37,7 +37,7 @@ User message + anonymized profile
                  |
                  v
  Structured score + browsing-only Model2Vec
- similarity + bounded popularity prior
+ similarity + bounded trust and retrieval-order priors
                  |
                  v
  Clarification + Top-10 parent_asin values
@@ -59,20 +59,20 @@ The base score uses field-weighted overlap, query coverage, recent-turn evidence
 
 When Model2Vec and the bundled Potion model are available, semantic similarity is applied only while internal state is exploratory. It reranks the bounded lexical pool instead of searching all 50,000 products. The semantic weight is 2.0. This gating preserved buying and override behavior better than global semantic reranking in ablations.
 
-### Popularity prior
+### Bounded catalog priors
 
-The agent uses `rating_number`, not average rating, as a small trust signal in exploratory states. Its logarithmic contribution saturates at 100,000 reviews and is capped at 0.5 point, so it acts only as a tie-breaker among similarly relevant products.
+The agent uses `rating_number`, not average rating, as a small catalog trust signal. Its logarithmic contribution saturates at 100,000 reviews and is capped at 0.5 point for browsing and 1.0 point for buying. In buying mode, a second bounded term preserves some evidence from the merged six-route retrieval order: `4 / sqrt(candidate_rank)`. Both terms rerank only already-retrieved products and cannot introduce a product that failed lexical recall.
 
 ## Evaluation
 
 All reported numbers use the unmodified organizer evaluator. The private holdout was never accessed.
 
-| Metric | V5.10e | V5.12d | Change |
+| Metric | V5.10e | V5.13 | Change |
 |---|---:|---:|---:|
 | Hit Rate@10 | 0.720000 | 0.770000 | +0.050000 |
-| MRR | 0.379129 | 0.405845 | +0.026716 |
-| MTTC | 4.875000 | 4.445000 | -0.430000 |
-| Technical Score | 0.596239 | 0.637853 | +0.041614 |
+| MRR | 0.379129 | 0.414903 | +0.035774 |
+| MTTC | 4.875000 | 4.440000 | -0.435000 |
+| Technical Score | 0.596239 | 0.640671 | +0.044432 |
 
 ### Scenario breakdown
 
@@ -80,20 +80,20 @@ All reported numbers use the unmodified organizer evaluator. The private holdout
 |---|---:|---:|---:|---:|
 | Boundary | 10 | 0.700000 | 0.313889 | 5.100000 |
 | Browsing | 80 | 0.825000 | 0.520392 | 3.850000 |
-| Buying | 80 | 0.737500 | 0.303581 | 4.225000 |
+| Buying | 80 | 0.737500 | 0.326225 | 4.212500 |
 | Intent Override | 30 | 0.733333 | 0.403743 | 6.400000 |
 
-The full evaluation was repeated with identical aggregate results. Unit and behavior checks passed 10/10.
+The full evaluation was repeated with identical aggregate results. Direct evaluation of the packaged `submission/agent.py`, the no-model fallback evaluation, and the three-turn recording demo also completed successfully.
 
 ## Controlled experiments
 
-Development used one-change-at-a-time ablations. Retained changes included feature-field weighting, exact multi-word feature evidence, a strict category/feature route, browsing-gated local semantic similarity, and the bounded popularity prior. Full-catalog semantic retrieval and a 1.0-point popularity prior were rejected because they reduced the recommended score or Hit Rate@10.
+Development used one-change-at-a-time ablations. Retained changes included feature-field weighting, exact multi-word feature evidence, a strict category/feature route, browsing-gated local semantic similarity, the bounded popularity prior, and the buying-only retrieval-order prior. Full-catalog semantic retrieval and a 1.0-point browsing popularity prior were rejected because they reduced the recommended score or Hit Rate@10.
 
 No model was trained or fine-tuned on the 200 public sessions. Potion is a pretrained static embedding model. This avoids claiming a learned reranker from a dataset too small for reliable training and validation.
 
 ## Robustness and fallback
 
-Semantic loading is guarded against missing packages, files, and invalid artifacts. With the model deliberately hidden, all 200 sessions completed and produced Hit Rate@10 `0.765000`, MRR `0.405534`, MTTC `4.485000`, and technical score `0.634460`.
+Semantic loading is guarded against missing packages, files, and invalid artifacts. With the model deliberately hidden, all 200 sessions completed and produced Hit Rate@10 `0.765000`, MRR `0.414341`, MTTC `4.480000`, and technical score `0.637202`.
 
 ## Performance and cost
 
@@ -115,4 +115,3 @@ Semantic loading is guarded against missing packages, files, and invalid artifac
 ## Attribution
 
 The challenge catalog is derived from Amazon Reviews 2023 by McAuley Lab at UCSD, as described by the participant kit. Potion and Model2Vec are provided by Minish Lab under the MIT license. See `models/potion-base-8M/README.md`.
-

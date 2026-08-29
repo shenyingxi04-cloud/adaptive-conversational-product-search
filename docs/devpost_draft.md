@@ -30,11 +30,11 @@ The agent maintains structured state for up to ten turns. It detects buying, bro
 On the 200-session public development set:
 
 - Hit Rate@10: 0.770000
-- MRR: 0.405845
-- MTTC: 4.445000
-- Technical Score: 0.637853
+- MRR: 0.414903
+- MTTC: 4.440000
+- Technical Score: 0.640671
 
-The released starter achieved Hit Rate@10 0.125 and MRR 0.068034. V5.12d improved Hit Rate@10 by 6.16 times while remaining fully offline. The private holdout was never accessed.
+The released starter achieved Hit Rate@10 0.125 and MRR 0.068034. V5.13 improved Hit Rate@10 by 6.16 times while remaining fully offline. The private holdout was never accessed.
 
 ## What is innovative
 
@@ -68,5 +68,3 @@ Solo project. System design, implementation, evaluation, documentation, and demo
 
 - GitHub: https://github.com/shenyingxi04-cloud/adaptive-conversational-product-search
 - Public YouTube demo: TODO
-
-

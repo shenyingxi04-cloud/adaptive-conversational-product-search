@@ -15,4 +15,4 @@ This concise chronological record summarizes the relevant Codex-assisted develop
 | Packaging | “整理提交代码、依赖、README、技术报告和 LLM/AI 工具使用记录” | Packaged code/model and documented setup, results, limitations, and AI use. | Self-contained submission directory produced. |
 
 The participant reviewed scores, selected the offline semantic direction, questioned overfitting, decided not to train a small public-set reranker, and authorized final packaging. Each retained change was evaluated on the full public set; rejected changes were not copied into the champion.
-
+| Final V5.13 optimization | “OK我们开始最后的算法优化吧” | Preserved V5.12d, analyzed 42 failures, and ablated bounded buying-mode popularity and retrieval-order priors. | Hit@10 stayed 0.770000; MRR rose to 0.414903; repeated score 0.640671; fallback 0.637202. |

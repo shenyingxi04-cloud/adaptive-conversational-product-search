@@ -148,7 +148,7 @@ def make_handler(app: DemoApp):
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Launch the V5.12d recording UI.")
+    parser = argparse.ArgumentParser(description="Launch the V5.13 recording UI.")
     parser.add_argument("--catalog", type=Path, default=Path("data/catalog_copy.jsonl"))
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8765)

@@ -1,4 +1,4 @@
-# V5.12d Final Submission
+# V5.13 Final Submission
 
 This directory is the self-contained runtime package for the TechJam Conversational E-Commerce Search Challenge.
 
@@ -56,17 +56,17 @@ python -m evaluator.local_evaluator --catalog data/catalog.jsonl --dataset data/
 
 On Windows PowerShell, replace `cp` with `Copy-Item`.
 
-Expected V5.12d result with the bundled semantic model:
+Expected V5.13 result with the bundled semantic model:
 
 | Metric | Result |
 |---|---:|
 | Hit Rate@10 | 0.770000 |
-| MRR | 0.405845 |
-| MTTC | 4.445000 |
-| Efficiency | 0.655500 |
-| Technical Score | 0.637853 |
+| MRR | 0.414903 |
+| MTTC | 4.440000 |
+| Efficiency | 0.656000 |
+| Technical Score | 0.640671 |
 
-Validated fallback without Model2Vec/model files: Technical Score `0.634460`. The fallback is functional but is not the preferred configuration.
+Validated fallback without Model2Vec/model files: Technical Score `0.637202`. The fallback is functional but is not the preferred configuration.
 
 ## Runtime profile
 
@@ -77,4 +77,3 @@ Measured on the development Windows CPU machine with the 50,000-product catalog:
 - Maximum response in the recorded 10-turn benchmark: approximately 0.225 seconds.
 - Runtime LLM/API calls: none.
 - Prompt/completion tokens: 0/0.
-
