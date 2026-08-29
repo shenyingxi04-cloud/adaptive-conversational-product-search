@@ -66,6 +66,7 @@ Solo project. System design, implementation, evaluation, documentation, and demo
 
 ## Links to complete before posting
 
-- GitHub: TODO
+- GitHub: https://github.com/shenyingxi04-cloud/adaptive-conversational-product-search
 - Public YouTube demo: TODO
+
 

@@ -72,7 +72,7 @@ Target duration: 2 minutes 45 seconds to 2 minutes 55 seconds. Speak naturally a
 
 ## 2:43–2:55 — Closing
 
-**Screen:** Final slide with GitHub URL placeholder and three points: “Stateful. Offline. Reproducible.”
+**Screen:** Final slide with the public GitHub URL and three points: “Stateful. Offline. Reproducible.”
 
 **Voiceover:**
 
@@ -85,5 +85,6 @@ Target duration: 2 minutes 45 seconds to 2 minutes 55 seconds. Speak naturally a
 - Do not scroll rapidly; zoom in on the changed ranking and extracted state.
 - Keep the final video below three minutes.
 - Upload to YouTube as **Public**, then verify playback in a signed-out or incognito browser.
-- Replace the final GitHub placeholder only after the public repository is available.
+- Use the repository URL: https://github.com/shenyingxi04-cloud/adaptive-conversational-product-search
+
 
