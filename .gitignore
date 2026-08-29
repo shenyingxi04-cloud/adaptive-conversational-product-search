@@ -1,0 +1,46 @@
+__pycache__/
+*.py[cod]
+.venv*/
+venv/
+.DS_Store
+.idea/
+.pytest_cache/
+.env
+results.json
+data/catalog.jsonl
+data/catalog*.jsonl
+data/releases/
+*.sqlite
+*.sqlite3
+
+# Local experiment outputs. Curated aggregate results belong in docs/.
+/results*.json
+/*_failures.jsonl
+/*_summary.json
+/debug_*_trace.jsonl
+/debug_*_result.json
+/cd
+/None
+/starter/agent_v*.py
+/evaluator/analyze_*_failures.py
+/evaluator/debug_evaluator.py
+# Organizer-only code, private evaluation data, manifests, and build reports.
+organizer/
+secure/
+# Internal provenance and release-audit working documents.
+docs/audits/
+docs/data_selection_audit.md
+docs/participant_release_checklist.md
+# Organizer-only pipeline tests.
+tests/test_5core_builder.py
+tests/test_organizer_pipeline.py
+*.log
+*.zip
+
+# Large local semantic caches and duplicate experiment model artifacts.
+experiments/semantic/cache/
+experiments/semantic/model2vec_cache/
+experiments/semantic/potion-base-8M/
+
+# Local diagnostic ranking reports.
+/*_ranks.jsonl
