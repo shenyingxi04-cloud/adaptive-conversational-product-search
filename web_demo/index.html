@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Adaptive Product Search</title>
+  <style>
+    :root { --ink:#142033; --muted:#68758a; --blue:#397cf6; --sky:#e9f2ff; --line:#dfe5ed; --panel:#f6f8fb; --green:#13966a; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:Inter,Segoe UI,Arial,sans-serif; color:var(--ink); background:#eef2f7; }
+    .app { height:100vh; min-height:720px; display:grid; grid-template-rows:72px 1fr; background:white; }
+    header { display:flex; align-items:center; justify-content:space-between; padding:0 30px; border-bottom:1px solid var(--line); }
+    .brand { display:flex; gap:13px; align-items:center; }
+    .logo { width:38px; height:38px; border-radius:12px; display:grid; place-items:center; background:var(--ink); color:white; font-weight:800; }
+    h1 { margin:0; font-size:18px; } .sub { margin-top:3px; color:var(--muted); font-size:12px; }
+    .status { display:flex; gap:10px; align-items:center; font-size:12px; color:var(--muted); }
+    .pill { padding:8px 12px; border:1px solid var(--line); border-radius:999px; background:var(--panel); }
+    .dot { display:inline-block; width:8px; height:8px; margin-right:7px; border-radius:50%; background:var(--green); }
+    main { min-height:0; display:grid; grid-template-columns:390px 1fr; }
+    .chat { min-height:0; display:grid; grid-template-rows:auto auto 1fr auto; border-right:1px solid var(--line); background:#fbfcfe; }
+    .chat-head { padding:24px 24px 14px; display:flex; justify-content:space-between; align-items:center; }
+    .chat-head strong { font-size:15px; } button { font:inherit; cursor:pointer; }
+    .reset { border:0; background:none; color:var(--muted); font-size:12px; }
+    .memory { margin:0 20px 14px; padding:14px; border-radius:14px; background:white; border:1px solid var(--line); }
+    .memory-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; font-size:12px; }
+    #mode { color:var(--blue); font-weight:700; text-transform:capitalize; }
+    .chips { display:flex; flex-wrap:wrap; gap:6px; min-height:26px; }
+    .chip { padding:5px 9px; border-radius:8px; color:#275ea8; background:var(--sky); font-size:11px; font-weight:650; }
+    .empty { color:#9aa5b4; font-size:11px; padding:5px 0; }
+    .messages { overflow:auto; padding:8px 20px 18px; }
+    .msg { max-width:88%; padding:12px 14px; border-radius:15px; margin:10px 0; font-size:13px; line-height:1.45; animation:rise .25s ease; }
+    .assistant { background:white; border:1px solid var(--line); border-bottom-left-radius:4px; }
+    .user { margin-left:auto; background:var(--ink); color:white; border-bottom-right-radius:4px; }
+    .override { margin:9px 0; padding:9px 11px; background:#fff3dc; color:#8a5a00; border-radius:10px; font-size:11px; }
+    .presets { padding:0 20px 10px; display:flex; gap:6px; overflow:hidden; }
+    .preset { border:1px solid var(--line); background:white; border-radius:10px; padding:7px 9px; color:var(--muted); font-size:10px; white-space:nowrap; }
+    form { display:flex; gap:8px; padding:0 20px 20px; }
+    input { flex:1; min-width:0; border:1px solid var(--line); border-radius:12px; padding:12px 13px; font:inherit; outline:none; }
+    input:focus { border-color:var(--blue); box-shadow:0 0 0 3px #dfeaff; }
+    .send { width:44px; border:0; border-radius:12px; color:white; background:var(--blue); font-size:18px; }
+    .results { min-width:0; overflow:auto; padding:28px 32px 36px; background:white; }
+    .result-head { display:flex; justify-content:space-between; align-items:end; margin-bottom:20px; }
+    .result-head h2 { margin:0 0 5px; font-size:24px; } .result-head p { margin:0; color:var(--muted); font-size:12px; }
+    .latency { text-align:right; color:var(--muted); font-size:11px; line-height:1.7; }
+    .latency strong { color:var(--green); font-size:17px; }
+    .grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
+    .card { position:relative; min-height:218px; border:1px solid var(--line); border-radius:16px; padding:18px; background:white; transition:.18s; animation:rise .3s ease both; }
+    .card:hover { transform:translateY(-2px); box-shadow:0 10px 28px #1b365d13; border-color:#bcd1f4; }
+    .rank { position:absolute; right:14px; top:14px; width:28px; height:28px; border-radius:9px; display:grid; place-items:center; background:var(--sky); color:var(--blue); font-size:11px; font-weight:800; }
+    .icon { width:42px; height:42px; border-radius:13px; display:grid; place-items:center; background:var(--panel); font-size:21px; margin-bottom:14px; }
+    .title { padding-right:30px; height:44px; overflow:hidden; font-weight:750; font-size:13px; line-height:1.35; }
+    .seller { color:var(--muted); font-size:10px; margin:7px 0 12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .feature { height:34px; overflow:hidden; color:#566379; font-size:10px; line-height:1.5; }
+    .meta { display:flex; justify-content:space-between; align-items:center; margin-top:14px; padding-top:12px; border-top:1px solid #edf0f4; font-size:11px; }
+    .rating { color:#a36600; } .asin { color:#9aa5b4; font-family:ui-monospace,Consolas,monospace; }
+    .welcome { grid-column:1/-1; margin-top:80px; text-align:center; color:var(--muted); }
+    .welcome b { display:block; color:var(--ink); font-size:24px; margin-bottom:10px; }
+    .loading { opacity:.55; pointer-events:none; }
+    @keyframes rise { from { opacity:0; transform:translateY(7px); } to { opacity:1; transform:none; } }
+    @media(max-width:1000px){ main{grid-template-columns:340px 1fr}.grid{grid-template-columns:repeat(2,minmax(0,1fr))} }
+  </style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="brand"><div class="logo">A</div><div><h1>Adaptive Product Search</h1><div class="sub">Conversational retrieval across 50,000 products</div></div></div>
+    <div class="status"><span class="pill"><span class="dot"></span><span id="semantic">Local AI ready</span></span><span class="pill">0 API calls</span></div>
+  </header>
+  <main>
+    <section class="chat">
+      <div class="chat-head"><strong>Shopping conversation</strong><button class="reset" id="reset">Reset session</button></div>
+      <div class="memory"><div class="memory-row"><span>Active preferences</span><span id="mode">Browsing</span></div><div class="chips" id="chips"><span class="empty">No constraints yet</span></div></div>
+      <div class="messages" id="messages"><div class="msg assistant">Tell me what you are looking for. You can refine the request—or change your mind at any time.</div></div>
+      <div><div class="presets"><button class="preset" data-message="I'm looking for women's ankle boots.">1 · Start broad</button><button class="preset" data-message="They should be waterproof and comfortable for rainy days.">2 · Refine</button><button class="preset" data-message="Actually, I changed my mind. Instead, I need black leather ankle boots for casual wear.">3 · Override</button></div><form id="form"><input id="input" autocomplete="off" placeholder="Describe what you need…"/><button class="send" aria-label="Send">↑</button></form></div>
+    </section>
+    <section class="results">
+      <div class="result-head"><div><h2>Recommended for you</h2><p id="caption">Results update as the conversation evolves.</p></div><div class="latency"><strong id="latency">—</strong><br><span id="count">Local retrieval</span></div></div>
+      <div class="grid" id="grid"><div class="welcome"><b>Ready when you are.</b>Use the three demo prompts or type a shopping request.</div></div>
+    </section>
+  </main>
+</div>
+<script>
+  const $ = id => document.getElementById(id);
+  const messages=$('messages'), grid=$('grid'), form=$('form'), input=$('input');
+  let sessionId='', turn=0, busy=false;
+  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  function icon(categories){ const v=categories.join(' ').toLowerCase(); if(/boot|shoe|footwear/.test(v))return '👢'; if(/cloth|women|men|fashion/.test(v))return '◈'; if(/jewel|earring/.test(v))return '◇'; if(/home|kitchen/.test(v))return '⌂'; if(/electronic|computer/.test(v))return '⌁'; return '◆'; }
+  function addMessage(text,who){ const d=document.createElement('div'); d.className=`msg ${who}`; d.textContent=text; messages.appendChild(d); messages.scrollTop=messages.scrollHeight; }
+  function renderState(state){ $('mode').textContent=state.mode.replace('_',' '); const chips=[]; Object.entries(state.constraints).forEach(([k,vals])=>vals.forEach(v=>chips.push(`<span class="chip">${esc(k)} · ${esc(v)}</span>`))); state.features.forEach(v=>{if(!chips.some(x=>x.includes(`· ${esc(v)}<`)))chips.push(`<span class="chip">feature · ${esc(v)}</span>`)}); $('chips').innerHTML=chips.join('')||'<span class="empty">No active constraints</span>'; if(state.mode==='intent_override'){ const d=document.createElement('div'); d.className='override'; d.textContent='↻ Conflicting preferences cleared. Updated intent applied.'; messages.appendChild(d); messages.scrollTop=messages.scrollHeight; } }
+  function renderCards(items){ grid.innerHTML=items.map((p,i)=>`<article class="card" style="animation-delay:${i*35}ms"><div class="rank">#${p.rank}</div><div class="icon">${icon(p.categories)}</div><div class="title">${esc(p.title)}</div><div class="seller">${esc(p.store)} · ${esc(p.categories.join(' / '))}</div><div class="feature">${esc(p.feature||'Matched to your current shopping preferences.')}</div><div class="meta"><span class="rating">★ ${p.rating??'—'}${p.rating_count?` · ${Number(p.rating_count).toLocaleString()}`:''}</span><span class="asin">${esc(p.parent_asin)}</span></div></article>`).join(''); }
+  async function newSession(){ const r=await fetch('/api/session',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'}); const d=await r.json(); sessionId=d.session_id; turn=0; $('semantic').textContent=d.semantic_status+' ready'; $('count').textContent=Number(d.product_count).toLocaleString()+' products · offline'; }
+  async function send(text){ if(busy||!text.trim())return; busy=true; document.body.classList.add('loading'); addMessage(text,'user'); input.value=''; try{ const r=await fetch('/api/respond',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({session_id:sessionId,message:text,turn:++turn,top_k:6})}); const d=await r.json(); if(!r.ok)throw new Error(d.error); addMessage(d.message,'assistant'); renderState(d.state); renderCards(d.recommendations); $('latency').textContent=d.elapsed_seconds.toFixed(3)+' s'; $('caption').textContent=`Turn ${turn} · ${d.recommendations.length} ranked matches · deterministic local output`; }catch(e){addMessage('Demo error: '+e.message,'assistant');}finally{busy=false;document.body.classList.remove('loading');input.focus();} }
+  form.addEventListener('submit',e=>{e.preventDefault();send(input.value)});
+  document.querySelectorAll('.preset').forEach(b=>b.addEventListener('click',()=>send(b.dataset.message)));
+  $('reset').addEventListener('click',async()=>{await newSession();messages.innerHTML='<div class="msg assistant">New session ready. What are you shopping for?</div>';$('chips').innerHTML='<span class="empty">No constraints yet</span>';$('mode').textContent='Browsing';grid.innerHTML='<div class="welcome"><b>Session reset.</b>Start a new shopping conversation.</div>';$('latency').textContent='—';});
+  newSession().then(()=>input.focus());
+</script>
+</body>
+</html>
+

@@ -175,3 +175,7 @@ This project is released under the [MIT License](LICENSE).
 ## Submission status
 
 See the [release checklist](docs/release_checklist.md) for the remaining GitHub, Devpost, and demo-video steps.
+
+## Recording UI
+
+On Windows, double-click `start_demo_ui.bat`. The browser opens `http://127.0.0.1:8765` and uses the existing V5.12d agent locally. No external API or network connection is used by ranking. Use the three preset prompts for the recorded multi-turn demo.

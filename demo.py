@@ -11,7 +11,7 @@ from submission.agent import Agent
 DEMO_MESSAGES = (
     "I'm looking for women's ankle boots.",
     "They should be waterproof and comfortable for rainy days.",
-    "Actually, ignore waterproof. I need black leather ankle boots for casual wear.",
+    "Actually, I changed my mind. Instead, I need black leather ankle boots for casual wear.",
 )
 
 

@@ -52,7 +52,7 @@ Target duration: 2 minutes 45 seconds to 2 minutes 55 seconds. Speak naturally a
 
 **Voiceover:**
 
-> Finally, the shopper changes direction: “Actually, ignore waterproof. I need black leather ankle boots for casual wear.” The agent removes the obsolete waterproof preference, extracts leather, black, and casual as current constraints, and ranks a matching black leather casual boot first. The response still takes less than two tenths of a second.
+> Finally, the shopper changes direction: “Actually, I changed my mind. Instead, I need black leather ankle boots for casual wear.” The agent removes the obsolete waterproof preference, extracts leather, black, and casual as current constraints, and ranks a matching black leather casual boot first. The response still takes less than two tenths of a second.
 
 ## 2:00–2:25 — Results
 
@@ -86,5 +86,3 @@ Target duration: 2 minutes 45 seconds to 2 minutes 55 seconds. Speak naturally a
 - Keep the final video below three minutes.
 - Upload to YouTube as **Public**, then verify playback in a signed-out or incognito browser.
 - Use the repository URL: https://github.com/shenyingxi04-cloud/adaptive-conversational-product-search
-
-
