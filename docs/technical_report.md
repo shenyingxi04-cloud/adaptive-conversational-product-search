@@ -63,17 +63,46 @@ When Model2Vec and the bundled Potion model are available, semantic similarity i
 
 The agent uses `rating_number`, not average rating, as a small catalog trust signal. Its logarithmic contribution saturates at 100,000 reviews and is capped at 0.5 point for browsing and 1.0 point for buying. In buying mode, a second bounded term preserves some evidence from the merged six-route retrieval order: `4 / sqrt(candidate_rank)`. Both terms rerank only already-retrieved products and cannot introduce a product that failed lexical recall.
 
+## Development evolution
+
+Development began with the released starter and proceeded through many separately saved and evaluated checkpoints. The version labels below are internal engineering milestones, not trained model generations. Regressions were retained in the experiment record because they informed later design choices, but they were not promoted into the final agent.
+
+- **Released starter:** established the interface and deterministic evaluation baseline.
+- **V2:** introduced structured constraint extraction, BM25 candidate retrieval, and deterministic field-aware reranking.
+- **V3–V4:** explored alternative state and scoring behavior. Their regression relative to V2 showed that additional complexity did not automatically improve retrieval.
+- **V5:** strengthened intent-override handling, explicit current-turn constraints, and candidate retrieval.
+- **V5.6:** added buying hard-constraint retrieval, constraint-specific supplementary retrieval, coverage bonuses, and missing-constraint penalties.
+- **V5.7:** added category anchors, non-informative-reply handling, and persistent conversational feature phrases.
+- **V5.8:** expanded multi-route retrieval and explicit category coverage in reranking.
+- **V5.9:** separated surface-form FTS retrieval terms from normalized reranking terms, producing the largest single late-stage recall improvement.
+- **V5.10e:** increased bounded candidate retention across the established retrieval routes.
+- **V5.11b:** added strict category-plus-feature retrieval and bounded exact-feature evidence.
+- **V5.12b:** introduced browsing-gated local Model2Vec semantic reranking after global semantic variants were rejected.
+- **V5.12d:** added a capped review-volume prior while preserving the lexical candidate boundary.
+- **V5.13:** added bounded buying-mode trust and retrieval-order priors, preserving Hit Rate@10 while improving MRR.
+
 ## Evaluation
 
-All reported numbers use the unmodified organizer evaluator. The private holdout was never accessed.
+All reported numbers use the unmodified organizer evaluator, the same 200-session public development set, and the frozen 50,000-product catalog. The private holdout was never accessed.
 
-| Metric | V5.10e | V5.13 | Change |
-|---|---:|---:|---:|
-| Hit Rate@10 | 0.720000 | 0.770000 | +0.050000 |
-| MRR | 0.379129 | 0.414903 | +0.035774 |
-| MTTC | 4.875000 | 4.440000 | -0.435000 |
-| Technical Score | 0.596239 | 0.640671 | +0.044432 |
+| Checkpoint | Hit Rate@10 | MRR | MTTC | Technical Score |
+|---|---:|---:|---:|---:|
+| Released starter | 0.125000 | 0.068034 | 9.810000 | 0.106710 |
+| V2 | 0.540000 | 0.279673 | 6.895000 | 0.436002 |
+| V3 | 0.360000 | 0.200429 | 8.520000 | 0.289729 |
+| V4 | 0.395000 | 0.219446 | 8.180000 | 0.319734 |
+| V5 | 0.465000 | 0.256855 | 7.810000 | 0.373357 |
+| V5.6 | 0.520000 | 0.245220 | 7.190000 | 0.409766 |
+| V5.7 | 0.585000 | 0.272524 | 6.160000 | 0.471057 |
+| V5.8 | 0.595000 | 0.277117 | 6.030000 | 0.480035 |
+| V5.9 | 0.705000 | 0.376837 | 5.000000 | 0.585551 |
+| V5.10e | 0.720000 | 0.379129 | 4.875000 | 0.596239 |
+| V5.11b | 0.755000 | 0.403865 | 4.585000 | 0.626960 |
+| V5.12b | 0.760000 | 0.402998 | 4.545000 | 0.629999 |
+| V5.12d | 0.770000 | 0.405845 | 4.445000 | 0.637853 |
+| **Final V5.13** | **0.770000** | **0.414903** | **4.440000** | **0.640671** |
 
+Compared with the released starter, V5.13 increased Hit Rate@10 from 0.125000 to 0.770000, a 6.16x improvement, while reducing MTTC from 9.810000 to 4.440000. The non-monotonic early results also document that experimental variants were measured rather than selectively described as improvements.
 ### Scenario breakdown
 
 | Scenario | Samples | Hit Rate@10 | MRR | MTTC |

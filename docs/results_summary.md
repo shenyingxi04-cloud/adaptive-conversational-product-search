@@ -31,7 +31,7 @@ All results use the unmodified organizer evaluator, frozen 50,000-product catalo
 | Hit Rate@10 | 0.125000 | 0.720000 | 0.770000 | 0.770000 |
 | MRR | 0.068034 | 0.379129 | 0.405845 | 0.414903 |
 | MTTC | 9.810000 | 4.875000 | 4.445000 | 4.440000 |
-| Technical Score | — | 0.596239 | 0.637853 | 0.640671 |
+| Technical Score | 0.106710 | 0.596239 | 0.637853 | 0.640671 |
 
 V5.13 preserves V5.12d Hit Rate@10 while increasing overall MRR by 0.009058. Its bounded buying-mode retrieval-order prior improves the ordering of already relevant candidates without changing the six-route recall stage.
 

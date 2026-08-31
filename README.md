@@ -11,7 +11,7 @@ Evaluated with the organizer-provided deterministic harness on the 200-session p
 | Hit Rate@10 | 0.125000 | **0.770000** |
 | MRR | 0.068034 | **0.414903** |
 | MTTC (lower is better) | 9.810000 | **4.440000** |
-| Technical Score | — | **0.640671** |
+| Technical Score | 0.106710 | **0.640671** |
 
 The final agent improves Hit Rate@10 by **6.16×** without an external API, paid model, network connection, or GPU. See the [full result breakdown](docs/results_summary.md).
 
